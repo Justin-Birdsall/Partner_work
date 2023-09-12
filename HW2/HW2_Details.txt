@@ -1,1 +1,60 @@
 Assignment Description:
+link to website: https://us.prairielearn.com/pl/course_instance/138751/instance_question/304907720/
+
+Begin by working through the "Introduction", "Full Adder", and "Sign Extender" tutorials. (You may also want to complete the 4-Bit Counter tutorial when we get to registers later in the semester.) You will find all the tutorials in the Help->Tutorials menu within JLS (look in the top right for Help).
+
+As you work through the tutorial, pay special attention to the following details:
+
+Name your half adder HalfAdder.jls, not ha as suggested by the tutorial.
+Name your sum output Sum, not SUM as suggested by the tutorial.
+Name the inputs to your half adder InputA and InputB, not A and B as suggested by the tutorial.
+Name your full adder FullAdder.jls, not fa as suggested by the tutorial.
+Importing a sub-circuit inserts a copy of the imported sub-circuit into the circuit you are creating. As a result, if you later discover a bug in your sub-circuit, you must re-import that sub-circuit everywhere. It is not sufficient to simply fix the bug in the sub-circuit's jls file. Moral: Thoroughly test your sub-circuits before importing them.
+When you are finished, save your half-adder in a file named HalfAdder.jls. Make sure the inputs are named "InputA" and "InputB", and the outputs are named "Sum" and "Carry". DLUnit requires the circuits to present a known interface. (In other words, the program needs to know what the input and output pins are named.) If you do not conform to the specified interface (i.e., the given circuit and input names), your circuit will be graded as incorrect.
+
+Learn how to test JLS circuits
+After completing a circuit, your first order of business should be to test it by setting the values of the input pins and examining the values of the output pins. In fact, it is a good idea to test sub-circuits as you build them.
+
+When you have finished building the full adder (as described in the tutorial):
+
+Add input pins named InputA, InputB, and CarryIn.
+Add a "generate test signals" element. (This element is on the toolbar to the right of the "pause" element.). Set appropriate values for the three input pins. As an example, one set of inputs may look like this:
+InputA 1 end
+InputB 1 end
+CarryIn 1 end
+Add watches to all the output pins.
+Place probes on the "Carry" outputs of each component half adder.
+Open the simulator window, run the simulation, and verify that the resulting output is correct.
+Change the scale factor from 1 to 5 and observe what happens.
+Using the simulator window is a good way to check a few example input/output pairs, or to track down bugs; however, trying to thoroughly test a circuit using this technique would be very tedious and time consuming. Hence, we use DLUnit to automate the running of many tests.
+
+Practice using this testing setup by testing the half adder you built while completing the tutorial. (Again, make sure the file, inputs, and outputs are all named correctly.) If you set up your path as suggested in the previous homework assignment, you can follow the instructions below. Otherwise, see the previous homework for details on how to run DLUnit (or ask me).
+
+Download HalfAdderTest.java.
+Compile the test: dlunit_compile HalfAdderTest.java
+Run dlunit HalfAdder.jls HalfAdderTest.class
+To make sure you understand how DLUnit works, deliberately introduce a bug into HalfAdder.jls (e.g., replace the XOR gate with an AND gate) and re-run the test script. (Then fix the circuit once you know what happens when there is an error.)
+
+Build your own circuit
+Now that you have had some practice using JLS, it's time to build your own circuit. Build a circuit named "UnsignedFullAdder_16bit" that adds two 16-bit unsigned integers. The simplest way to complete this assignment is to implement a ripple-carry adder. There are other, faster adders that you may want to use for your project, but I suggest getting a simple ripple-carry adder working first.
+
+To keep the design manageable, you may want to use one or more sub-circuits (e.g., connect four 4-bit adders, or two 8-bit adders). If you do use sub-circuits, notice that you can unbundle buses into arbitrary groups. For example, you can take a 16-bit bus and split it into 0-3, 4-7, 8-11, and 12-15. In the "Create unbundler" dialog, select "Group bits" instead of "Single bits". (See the "Sign Extender" tutorial built into JLS.)
+
+Name the inputs "InputA","InputB", and "CarryIn".
+Name the outputs "Output" and "CarryOut". (If you do not name the inputs and outputs correctly, the test script will not run.) The "CarryOut" output should be 1 if, and only if, there is an overflow.
+Test your circuit using SampleUnsigned16BitAdderTest.java. If the test script doesn't work without modification, then you either named your circuit, inputs, or outputs incorrectly.
+The provided tests will not completely test your circuit. Add as many tests as necessary to be confident your circuit works.
+Submission and Grading:
+Big picture:
+
+You do not need to submit anything for the sign extension tutorial.
+Add a text box to your UnsignedFullAdder_16bit.jls file that includes your name and your partner's name.
+Be sure to test your circuit thoroughly!
+Submit your circuit below for testing.
+Submitting to PrairieLearn
+
+When you have completed and thoroughly tested your program, upload your code below. When you click Save & Grade, your code will be graded immediately and your score shown to you. If you do not score 100%, you can adjust your code, upload a new file, and try again.
+
+Autograder Feedback:
+
+For this problem, the autograder will run a simple suite of tests on your circuit. It will notify you of the first error it encounters in the simple tests and tell you the input and expected output. You cannot assume that just because you fix the first error that you will pass the rest of the simple tests. Then, your code will be subjected to more thorough "hidden" tests, and the autograder will not give you specific details about any test cases you fail.

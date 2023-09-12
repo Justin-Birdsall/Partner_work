@@ -1,0 +1,72 @@
+
+Link to the assignment:https://us.prairielearn.com/pl/course_instance/138751/instance_question/303220815/
+Project Description:
+The JLS introduction homework problem (from Homework 1) explains how to obtain, set up, and use JLS, as well as the DLUnit testing software.
+
+Once you have completed the introduction, you might find this video from Dr. Kurmas helpful for working in JLS. The video demonstrates several helpful JLS shortcuts. Remember, JLS was designed specifically with these projects in mind. If you find a task highly repetitive/tedious, you may be overlooking a shortcut.
+
+Task:
+Implement a 16-bit signed adder using any algorithm you wish, provided the circuit has a reasonable running time and size. Faster adders will receive more points. (See Grading section below.) Your adder must report overflow conditions when they occur (with respect to signed inputs). This circuit must have an input named CarryIn. You will use this input for future projects.
+
+Your inputs must be named InputA, InputB, and CarryIn. Your circuit will not work with my tests otherwise.
+
+Your outputs must be named Output, CarryOut, and Overflow. CarryOut is the carry out from the last full adder. It is also, in effect, the overflow indicator for unsigned inputs. Overflow is the overflow indicator for signed inputs. CarryOut and Overflow will not necessarily have the same value.
+
+You may use SampleSigned16BitAdderTest as a basis for your own tests. A word of warning: these tests scripts are incomplete. Don't assume that a circuit passing these sample tests will pass all of my tests. Add test cases to ensure correct functionality.
+
+Rules:
+The simulator comes with a built-in adder. You may not use the built-in adder.
+To build the required circuits, you will probably find it useful to design and build several subcircuits. These subcircuits may have any interface you choose; however, you are responsible for testing them.
+You must write all of your own chips. Do not share "internal" chips with your classmates or download them off the Internet.
+Be sure to test your components thoroughly. Just because it passes the included tests does not mean it will pass mine.
+Warning about JLS Subcircuits:
+JLS inserts the code for sub-circuits directly into the circuits into which they are imported. Thus, changes to sub-circuit files are not seen by the circuits that contain them. If you discover a bug in a sub-circuit, you must delete and re-import the sub-circuit into the parent. (Test your circuits thoroughly before importing them!)
+
+Grading:
+This assignment will be scored out of 100 points.
+
+Category	Rubric	Max Score
+Functionality		
+Not Attempted	0
+Substantially Complete, but passes no tests	15
+Passes a few tests	25
+Correctly adds positive integers only	45
+Correctly adds positive and negative integers
+(but overflow does not work correctly)	60
+Passes all tests	76
+Date 100% Correct		
+Two+ days early	17
+One day early	16
+On time	15
+One day late	12
+(-3 per day)	...
+Five or more days late	0
+Speed		
+<= 75	9
+<= 125	8
+<= 175	7
+<= 225	6
+<= 275	5
+<= 300	3
+> 300	0
+Penalties:
+
+You will lose up to 5% if your circuits are not reasonably neat
+Circuit speed:
+
+PrairieLearn will check your circuit's correctness but will not grade your circuit's speed. I will grade your circuit's speed manually.
+
+To figure out your circuit's speed on your own, you need to (1) identify the critical path through your circuit and then (2) sum all of the gate delays along the critical path. When computing this, use the default gate delays given in JLS.
+
+Submission constraints:
+
+You can submit this project as many times as you need to get it correct, but you can submit at most once every two hours. So, if you wait until the deadline to submit and do not score 100%, you may not be able to submit again until the next day, resulting in a score penalty. This is meant to strongly incentivize you to (a) start early and (b) test your adder yourself using DLUnit. Note that you also get a slight benefit for submitting the project early.
+
+Deliverables:
+To submit your project:
+
+Add a text box to your main jls file that includes your name and your partner's name.
+
+Once you have thoroughly tested your circuit, upload it below to run it against my tests.
+
+I will grade your circuit's speed manually (see above for how you can figure it out on your own!).
