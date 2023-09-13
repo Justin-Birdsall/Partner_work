@@ -1,4 +1,4 @@
 java -jar JLS.jar for starting it up
-dlunit_compile "file_name".java
+compile homejavac -cp DLUnit.jar SampleUnsigned16BitAdderTest.java
+dlunit_compile "file_name".java 
 Run dlunit "JLS FILE NAME".jls ".Java file name".class
-test
