@@ -81,12 +81,24 @@ startloop:
   #
   #use a0, a1, a2, a3
   #$t0 is our i, which does not need to be stored
+  
+  addi $a0, $t0, 0  #first arg
+  addi $s0, $0, 2   #var to hold 2 for division
+  addi $s1, $a1, 1  #intermediate var for future division on 2nd arg
+  addi $s2, $a2, 2  #^ but for 3rd arg
+  div $s1, $s0      #division for second arg
+  #TODO: implement way to retrieve remainder/quotient
+  addi $a1, $s1, 0  #incorrect, but will be second arg, replace $s1 with result of prev div
+  div $s2, $s0      #division for third arg
+  addi $a2, $s2, 0  #incorrect, like above, but for third arg
+  addi $a3, $0, 3   #fourth arg
+
   sw $a0, 16($sp)
   sw $a1, 20($sp)
   sw $a2, 24($sp)
   sw $a3, 28($sp)
-  addi $a0, $t0, 0
-  addi $s0, $0, 2
+  #side note: since the "i" var needs to be checked with the 2nd arg ($a1) storing $a vars needs to be adjusted
+
   
   j combineFour
 
@@ -96,7 +108,8 @@ startloop:
 
 
 endloop:
-  jr $ra
+    addi $t0, $t0, 1
+    jr $ra
 
 
 combineFour:
