@@ -1,60 +1,3 @@
-#Justin Birdsall and Richard Roy 
-# def fib(n):
-#   if n < 2: return n
-#   return fib(n-1) + fib(n-2)
-
-# a0: n
-# s0: 2   <-- Note: Need to back up s register
-# v0: fib(n-1) + fib(n-2)
-# t0: fib(n-1)
-# t1: fib(n-2)
-fib:
-  # -- Stack allocation --
-  addi $sp, $sp, -8   # Allocate space for two register values
-  sw $s0, 0($sp)      # Back up $s0 to stack
-  sw $ra, 4($sp)      # Back up $ra to stack
-
-  addi $s0, $0, 2         # $s0 = 2
-  blt $a0, $s0, base_case # if n < 2: return n
-
-  # Right now, a0 = n; we want fib(n-1)
-  subi $a0, $a0, 1
-  # Back up a0 register because fib is going to mess with it
-  addi $sp, $sp, -4 # Allocating space for 1 register value on stack
-  sw $a0, 0($sp)    # Backing up $a0 register value on stack
-  jal fib
-  # v0 = fib(n-1)
-  move $t0, $v0 # t0 = fib(n-1)
-  # Restore a0 register to its original value prior to calling fib(n-1)
-  lw $a0, 0($sp)    # Restore $a0's original value from the stack
-  addi $sp, $sp, 4  # Deallocating space on the stack
-
-  # f(n-2)
-  # Back up $t0 because it's a non-preserved register (i.e., fib might overwrite it)
-  addi $sp, $sp, -4 # Allocating space for 1 register value on stack
-  sw $t0, 0($sp)    # Backing up $t0 register value on stack
-  subi $a0, $a0, 1  # $a0 = n - 2
-  jal fib           # v0 = fib(n-2)
-  move $t1, $v0     # t1 = v0 = fib(n-2)
-  # Restore $t0 back to original value prior to calling fib(n-2)
-  lw $t0, 0($sp)    # Restore $t0's original value from the stack
-  addi $sp, $sp, 4  # Deallocating space on the stack
-
-  # t0: fib(n-1); t1: fib(n-2)
-  add $v0, $t0, $t1
-  j end_fib
-
-  base_case:
-    move $v0, $a0 # $v0 = $a0 (return n)
-
-  end_fib:
-    # -- Stack deallocation --
-    lw $s0, 0($sp)    # Restore $s0 to original value
-    lw $ra, 4($sp)    # Restore $ra to original value
-    addi $sp, $sp, 8  # Deallocate stack space
-    jr $ra
----------------------------------------------------------------------------------------------------------------------------------- 
-
 .globl wackySum combineFour
 
 
@@ -68,12 +11,14 @@ sw $s2, 8($sp)
 sw $v0, 12($sp)
 
 wackySum:
-    #the t0 register is our our incramentor (i)
+    #the t0 register is our our incrementor (i)
     addi $t0, $a0, 0
+    #initalize our return register to be 0 
     addi $v0, $0, 0
     j startloop
 
 startloop:
+ #Assembly uses loops kind of weird. so while this is i > $b0
   bgt $t0, $a1, endloop
   #this is where we use stack
   #combinefour call gets set to $t1
@@ -113,8 +58,34 @@ endloop:
 
 
 combineFour:
+    #first lets do a + b
+    addi $t1, $a0, $a1
+    #take the previous value of $t1 and add c to it
+    addi $t1, $t1, $a2
+    #again add the previous value of $t1 and add D to it. 
+    addi $t1, $t1, $a3
 
-    
-
-
+#now that we should have our math calculations correct we now have to check if even or odd
+    #remembering back to even and  odd from our cpu projects, we can look at the last bit to
+    #check if it is even or odd. 0 == even 1 == odd. 
+    #use the $t2 register to hold the result even or odd 
+    andi 
 #--deallocating our stack pointer --
+
+# chagpt's won't work because it never lw's $a1 for the bgt
+# bettt 
+#loolllll ill join you later lmaooo 
+# I would simply just kms 
+# works for me. Im going to close live share and head home to eat dinner and I will push to github
+#if that works. Ill hop back on it straight after dinner. 
+# 10/4 captin 
+#07
+#lol oops 
+#ye am white boarding rn
+#not high i swear
+#just found out i have a data structs hw due tomorrow... at 12:00 am............on g
+# i'll get the first problem on ours done, then start on my other hw, lmk if you need help and i'll speedrun it
+#ok need food anyway
+#msg me and i'll push so u can liveshare
+
+#o7
