@@ -1,63 +1,57 @@
 .globl wackySum combineFour
-
+#someone would store the t registers before calling wackySum
 wackySum:
     #--Stack allocation-- 
     #remember the stack grows down
-    addi $sp, $sp, -8 # <- r
+    addi $sp, $sp, -8
 
     #we have to promise that we don't mess with the $s registers put their original values on the stack
     sw $s0, 0($sp)
     sw $s1, 4($sp)
     sw $s2, 8($sp)
-
-    # Initialize variables
-
-    #these are just $a regs, don't need to do this hereVVV
-
-    #add $s0, $0, $a0  # a in $s0
-    #add $s1, $0, $a1  # b in $s1
-    #add $s2, $0, $a2  # c in $s2
-    add $v0, $0, $0   # sum in $v0
     
-    #the t0 register is our our incrementor (i)
-    addi $t0, $0, 0
-    #initalize our return register to be 0 
-    addi $t1, $0, 0
-
-
     
-    #don't need? it should just continue down the lines and enter startloop.
-    #j startloop
-    
-    #^^^ true but for convention
+    addi $s0, $a0, 0  #preserving a0 
+    addi $s1, $a1, 0  #preserving a1
+    addi $s2, $a2, 0  #preserving a2
+
+    #the t0 register is our our incrementor (i) we have to set i = a like in the java code 
+    addi $t0, $a0, 0    #t0 is our i
+    addi $t1, $0, 0     #t1 is our sum
 
 startloop:
  #Assembly uses loops kind of weird. so while this is i > $b0 it should be equivlent to i <= to 
   bgt $t0, $a1, endloop
 
-  #fix for curr errs
-  addi $t2, $a2, 0
+  addi $a0, $t0, 0  #first arg done
+  addi $a1, $t0, 1  #second arg pre div
+  addi $a2, $t0, 2  #third arg pre div
 
-  #use a0, a1, a2, a3
+  sra $a1, $a1, 1   #second arg post div
+  sra $a2, $a2, 1   #third arg post div
+
+  addi $a3, $t0, 3  #fourth arg done
+  #all args are done
   
-  addi $s0, $0, 2   #var to hold 2 for division
-  addi $s1, $a1, 1  #intermediate var for future division on 2nd arg
-  addi $s2, $a2, 2  #^ but for 3rd arg
+  addi $sp, $sp, -12
+  sw $t0, 0($sp)
+  sw $t1, 4($sp)
+  sw $t2, 8($sp)
+  sw $ra, 12($sp)
 
-  div $s1, $s0      #division for second arg
-  mflo $s1          #storing quotient in $s1
-  addi $a1, $s1, 0  #second arg
+  jal combineFour
 
-  div $s2, $s0      #division for third arg
-  mflo $s2          #storing quotient in $s2
-  addi $a2, $s2, 0  #third arg
-  
-  addi $a3, $0, 3   #fourth arg
-  
-  j combineFour
+  lw $ra, 12($sp)
+  lw $t2, 8($sp)
+  lw $t1, 4($sp)
+  lw $t0, 0($sp)
+  addi $sp, $sp, 8
 
-  addi $v0, $t1,0 
-  addi $t0, $t2,0
+
+#
+  add $t1, $t1, $v0   #adds combinefour return val to sum
+  addi $v0, $t1, 0    #places sum val in v0 in case the loop ends on next bgt
+  addi $t0, $s1, 0    #increments i by c (2nd arg)
   j startloop
 
 
@@ -68,16 +62,16 @@ endloop:
     lw $s1, 4($sp)
     lw $s0  0($sp)
     #resetting the pointer to 0 
-    addi $sp, $0, +8
-    addi $t0, $t0, 1
+    addi $sp, $0, 8
+    #addi $t0, $t0, 1
+    #add $t0, $t0, $a2
     jr $ra
 
 
-combineFour: #should still store $s registers here and load them at the end
-#one of the questions is about removing the first func so this needs to be able to 
-#survive standalone             #stop include heve is before Combine 4
-                                #i didn't check but it could have been combinefour doesn't matter tho
-    addi $sp, $sp, -8               #not sure what that means
+combineFour: 
+#should still store $s registers here and load them at the end
+
+    addi $sp, $sp, -8           
 
     sw $s0  0($sp)
     sw $s1  4($sp)
@@ -96,13 +90,14 @@ combineFour: #should still store $s registers here and load them at the end
     #check if it is even or odd. 0 == even 1 == odd. 
     #use the $t2 register to hold the result even or odd 
     andi $t2, $t1, 1
+    addi $v0, $t1, 0
     beq $t2, 0, ExitOutCombineFour
     #since we branch if even then we can /2 for odd so if even it should never hit /2
     #looking at problem three helped with this
     #by shifting 1 to the right should be the same as /2
     sra $v0, $t1, 1 
+
 ExitOutCombineFour:
-    #this feels weird to me not sure why
     lw $s2, 8($sp)
     lw $s1, 4($sp)
     lw $s0  0($sp)
