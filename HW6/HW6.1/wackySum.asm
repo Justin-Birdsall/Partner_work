@@ -1,5 +1,8 @@
 .globl wackySum combineFour
 #someone would store the t registers before calling wackySum
+#addi $a0, $0, 21
+#addi $a1, $0, 26
+#addi $a2, $0, 1
 wackySum:
     #--Stack allocation-- 
     #remember the stack grows down
@@ -9,7 +12,7 @@ wackySum:
     sw $s0, 0($sp)
     sw $s1, 4($sp)
     sw $s2, 8($sp)
-    
+                                          
     
     addi $s0, $a0, 0  #preserving a0 
     addi $s1, $a1, 0  #preserving a1
@@ -18,19 +21,19 @@ wackySum:
     #the t0 register is our our incrementor (i) we have to set i = a like in the java code 
     addi $t0, $a0, 0    #t0 is our i
     addi $t1, $0, 0     #t1 is our sum
-
+    #addi $t2, $0, 0     #initalize t2
 startloop:
  #Assembly uses loops kind of weird. so while this is i > $b0 it should be equivlent to i <= to 
   bgt $t0, $a1, endloop
 
-  addi $a0, $t0, 0  #first arg done
-  addi $a1, $t0, 1  #second arg pre div
-  addi $a2, $t0, 2  #third arg pre div
+  addi $a0, $t0, 0  #first arg done i = a
+  addi $a1, $t0, 1  #second arg pre div (i+1)
+  addi $a2, $t0, 2  #third arg pre div (i+2)
 
-  sra $a1, $a1, 1   #second arg post div
-  sra $a2, $a2, 1   #third arg post div
+  srl $a2, $a2, 1   #third arg post div (i+2)/2
+  srl $a1, $a1, 1   #second arg post div (i+2)/2
 
-  addi $a3, $t0, 3  #fourth arg done
+  addi $a3, $t0, 3  #fourth arg done (i+3)
   #all args are done
   
   addi $sp, $sp, -12
@@ -41,6 +44,8 @@ startloop:
 
   jal combineFour
 
+  add $v0, $v0, $t1    #places sum val in v0 in case the loop ends on next bgt
+
   lw $ra, 12($sp)
   lw $t2, 8($sp)
   lw $t1, 4($sp)
@@ -50,8 +55,9 @@ startloop:
 
 #
   add $t1, $t1, $v0   #adds combinefour return val to sum
-  addi $v0, $t1, 0    #places sum val in v0 in case the loop ends on next bgt
-  addi $t0, $s1, 0    #increments i by c (2nd arg)
+  #i think we may be resetting $t0 before we add it to $v0
+  #addi $v0, $t1, 0    #places sum val in v0 in case the loop ends on next bgt
+  add $t0, $t0, $s2    #increments i by c (2nd arg)
   j startloop
 
 
@@ -90,13 +96,16 @@ combineFour:
     #check if it is even or odd. 0 == even 1 == odd. 
     #use the $t2 register to hold the result even or odd 
     andi $t2, $t1, 1
-    addi $v0, $t1, 0
-    beq $t2, 0, ExitOutCombineFour
+    beq $t2, 0, evenOutput
+    j ExitOutCombineFour
+    #addi $v0, $t1, 0
     #since we branch if even then we can /2 for odd so if even it should never hit /2
     #looking at problem three helped with this
     #by shifting 1 to the right should be the same as /2
-    sra $v0, $t1, 1 
-
+    #testing
+    #srl $v0, $t1, 1 
+evenOutput:
+    addi $v0, $t1, 0
 ExitOutCombineFour:
     lw $s2, 8($sp)
     lw $s1, 4($sp)
