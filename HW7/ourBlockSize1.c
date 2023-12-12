@@ -27,17 +27,13 @@ int main() {
   register int outer_loop;
   register int inner_loop;
   register int solution = 0;
-  register int odd;
-  register int even;
-  odd = 0;
-  even = 128;
-  int balls = 0;
+
   for (outer_loop = 0; outer_loop < NUM_LOOPS; outer_loop++) {
   
-        //solution *= array[0];
-      balls *= array[0];
-      //balls -= array[8192];
-        //solution *= array[];
+      //DON'T DO IT DOES NOT WORK FOR NO REASON AT ALL
+      solution *= array[35];
+      //8192 is the first digit that wraps back around 
+      solution *= array[8192];
       
   }
 
