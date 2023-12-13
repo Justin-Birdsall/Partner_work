@@ -4,23 +4,6 @@
 
 #define NUM_LOOPS 10000000
 
-
-/****************************************************************************
- *
- *  Notice that the array is an array of characters.  This means that
- *  each item in the cache is exactly 1 byte.  This makes it easy to
- *  identify data items that will or will not conflict in the cache.
- *  For example, in an 8KB direct-mapped cache, array bytes 0 and 8192
- *  will conflict.
- *
- *  This program simply iterates through each byte in the cache NUM_LOOPS
- *  times.
- *
- * Declaring the local variables as "register" variables encourages
- * the compiler to keep the values of these variables in a register,
- * thereby reducing their effect on the cache hit rate.
- ****************************************************************************/
-
 int main() {
   _Alignas(64)  /* make sure that the array aligns with the cache. */
   char array[ARRAY_SIZE];
@@ -30,12 +13,19 @@ int main() {
 
   for (outer_loop = 0; outer_loop < NUM_LOOPS; outer_loop++) {
   
-      //DON'T DO IT DOES NOT WORK FOR NO REASON AT ALL
-      solution *= array[35];
-      //8192 is the first digit that wraps back around 
+      //This will go into set 1 32-63 for the 32 blocks and set 0 (0-63) for 
+      //64 bit block cache 
+      solution *= array[32];
+      //8192 is the first digit that wraps back around to set 0 for both
+      //since set 0 is taken already in the 64 bit block it will boot and replace
+      //the next iteration of the loop will then boot out this value for 32
+      //For 32 bit blocks 0 is free so once it gets stored after first miss
+      //we won't have to boot it out again
       solution *= array[8192];
       
   }
 
   return solution;
 }
+//for block in 32 64 128 256;   do valgrind --tool=cachegrind --cachegrind-out-file=/dev/null
+//  --D1=8192,1,${block} ./a.out 2> output_${block}; done

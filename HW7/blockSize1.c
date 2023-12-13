@@ -36,3 +36,17 @@ int main() {
 
   return solution;
 }
+
+// Large block size will mean that a fixed-size cache will have fewer blocks.
+// * Increases conflicts, thus increasing the miss rate
+// * Takes more time to fetch the missing block on a miss due to the additional
+//   data fetched
+// * Time required for this is the miss penalty
+// * If adjacent words in a block are not accessed later, effort to fetch is wasted
+//It still ends up being beneficial to have larger block sizes to exploit some spatiallocality
+
+/*Now, write a C program for which the miss rate is considerably higher for a 64-byte block than for a 32-byte block. 
+The easiest way to do this is to find two array locations that conflict with a 64-byte block, but not with a 32-byte block.
+ If you do this, you will see the cache with the 32-byte blocks have a nearly 0% miss rate while the cache with the 64-byte
+blocks has nearly a 100% miss rate.
+*/
